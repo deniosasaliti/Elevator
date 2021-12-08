@@ -9,6 +9,7 @@ public class Main {
         System.out.println(a.getThis().toString());
         A.doA();
         B.doA();
+        System.out.println("add some on some branch");
 
         System.out.println("asdasd");
 
