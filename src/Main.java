@@ -10,6 +10,8 @@ public class Main {
         A.doA();
         B.doA();
 
+        System.out.println("asdasd");
+
     }
 }
 
