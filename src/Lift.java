@@ -34,29 +34,34 @@ public class Lift {
     }
     private   void unloadDudesFromElevator(){
 
-
         int floorNumber = currentFloor;
         Integer countOfDudesToOut = liftNavigable.get(floorNumber);
-        if (countOfDudesToOut !=null){
-            freePlaces += countOfDudesToOut;
-            System.out.println(countOfDudesToOut + "  ______countOfDudesToOut_______ ");
-            System.out.println(freePlaces + "  ______freePlaces_______ ");
-        liftNavigable.remove(floorNumber);
-        TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(currentFloor);
+        if (freePlaces > 0 && countOfDudesToOut==null){
+            loadDudesIntoElevator();
+            System.out.println("was free");
+        }else {
 
-        loadDudesIntoElevator();
+            if (countOfDudesToOut != null) {
+                freePlaces += countOfDudesToOut;
+                System.out.println(countOfDudesToOut + "  ______countOfDudesToOut_______ ");
+                System.out.println(freePlaces + "  ______freePlaces_______ ");
+                liftNavigable.remove(floorNumber);
+                TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(currentFloor);
 
-        for (int k=1; k<=countOfDudesToOut; k++) {
-            int randomForDude = getRandomForDude(random, 1, building.countOfFloor, currentFloor);
+                loadDudesIntoElevator();
 
-            dudesQue.put(randomForDude,
-                    dudesQue.containsKey(randomForDude)
-                            ?  dudesQue.get(randomForDude) + 1
-                            :  1);
+                for (int k = 1; k <= countOfDudesToOut; k++) {
+                    int randomForDude = getRandomForDude(random, 1, building.countOfFloor, currentFloor);
+
+                    dudesQue.put(randomForDude,
+                            dudesQue.containsKey(randomForDude)
+                                    ? dudesQue.get(randomForDude) + 1
+                                    : 1);
+                }
+                System.out.println(dudesQue + " DudeQue_____AAAAAAAAAAAAAAAAAAAAAAAAAAA___AAA");
+            }
+            System.out.println(currentFloor + "   currentFloor int out____________________!!!____");
         }
-            System.out.println(dudesQue + " DudeQue_____AAAAAAAAAAAAAAAAAAAAAAAAAAA___AAA");
-        }
-        System.out.println(currentFloor  + "   currentFloor int out____________________!!!____");
     }
 
 
@@ -117,28 +122,13 @@ public class Lift {
         System.out.println();
         System.out.println(building.countOfFloor + " building.countOfFloor ");
         while (canMove()){
-            System.out.println("we can move " +  currentFloor);
-            if (currentFloor !=1) {
-                unloadDudesFromElevator();
-            }
-            if (currentFloor==1) {
-                loadDudesIntoElevator();
-            }
-
-            if (freePlaces > 0) {
-//                currentFloor = building.getWaitToUp().higher(currentFloor);
-                currentFloor = Math.min(building.getWaitToUp().higher(currentFloor),liftNavigable.higherKey(currentFloor));
-                System.out.println(building.getWaitToUp().higher(currentFloor) + "  WAITERS+_+_+_+_+_+_+_+");
-                System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
-            }else currentFloor = liftNavigable.higherKey(currentFloor);
-            System.out.println(liftNavigable + " liftNavigable");
-
-
+            directionToUp();
         }
 
     }
 
     private   int getRandomForDude(Random random,int min,int max,int currentFloor){
+
 
         if (currentFloor == max) {
             max--;
@@ -153,5 +143,40 @@ public class Lift {
         return number;
     }
 
+    private void directionToDown(){
+        System.out.println("DIRECTION WAS CHANCHED");
+
+    }
+
+    private void directionToUp(){
+        System.out.println("we can move " +  currentFloor);
+        if (currentFloor !=1) {
+            unloadDudesFromElevator();
+        }
+        if (currentFloor==1) {
+            loadDudesIntoElevator();
+        }
+        Integer waiter = building.getWaitToUp().higher(currentFloor);
+        Integer higher = liftNavigable.higherKey(currentFloor);
+        if (freePlaces==5 && waiter == null && higher==null){
+            directionToDown();
+        }else {
+            if (freePlaces > 0) {
+
+                System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
+                System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
+//                currentFloor = building.getWaitToUp().higher(currentFloor);
+                if (waiter != null)
+                    currentFloor = Math.min(waiter, higher);
+                else currentFloor = higher;
+
+            } else currentFloor = higher;
+            System.out.println(liftNavigable + " liftNavigable");
+        }
+
+    }
 
 }
+
+
+

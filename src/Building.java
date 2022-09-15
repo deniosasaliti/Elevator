@@ -56,7 +56,7 @@ public class Building {
             System.out.println();
 
 
-                    TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
+            TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
                 for (int k=1; k <= countOfDudes;k++){
 
 
@@ -70,9 +70,10 @@ public class Building {
                     integerIntegerTreeMap.put(randomForDude,integerIntegerTreeMap
                             .containsKey(randomForDude) ?
                             integerIntegerTreeMap.get(randomForDude)+1 : 1);
-                    floorDudes.put(i,integerIntegerTreeMap);
+
 
                 }
+                    floorDudes.put(i,integerIntegerTreeMap);
                     System.out.println(integerIntegerTreeMap + " MAP IS");
 
 
