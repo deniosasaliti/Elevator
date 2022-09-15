@@ -12,12 +12,13 @@ public class Lift {
         this.building = building;
     }
 
+
     private int currentElevatorDestination;
     private int freePlaces =5;
 
     Building building;
     private Random random;
-
+    private boolean isElevatorStart = false;
 
 
     private int currentFloor=1;
@@ -65,6 +66,7 @@ public class Lift {
     }
 
 
+
     private   void loadDudesIntoElevator(){
 
         int floorNumber = currentFloor;
@@ -105,17 +107,22 @@ public class Lift {
         }
     }
 
-    private boolean canMove = liftNavigable.higherKey(currentFloor)!=null && building.getFloorDudes().get(currentFloor).isEmpty();
+
 
 
     private boolean isElevatorFull(){
        return freePlaces >= 0;
     }
+    private boolean canMove = liftNavigable.higherKey(currentFloor)!=null && building.getFloorDudes().get(currentFloor).isEmpty();
+
 
     public void start(){
+
         System.out.println();
         System.out.println(building.countOfFloor + " building.countOfFloor ");
-        while (!canMove){
+
+        System.out.println();
+        while (canMove){
             directionToUp();
         }
 
@@ -143,12 +150,14 @@ public class Lift {
         System.out.println("__________________________________________________DIRECTION WAS CHANCHED__________________________________________________");
         System.out.println();
         System.out.println();
-        canMove = true;
+        canMove = false;
+
 
     }
 
     private void directionToUp(){
         System.out.println("we can move " +  currentFloor);
+
         if (currentFloor !=1) {
             unloadDudesFromElevator();
         }
@@ -157,7 +166,7 @@ public class Lift {
         }
         Integer waiter = building.getWaitToUp().higher(currentFloor);
         Integer higher = liftNavigable.higherKey(currentFloor);
-        if ( building.getFloorDudes().get(currentFloor).lowerKey(currentFloor)!=null && higher==null){
+        if (freePlaces==5 && waiter == null && higher==null){
             directionToDown();
         }else {
             if (freePlaces > 0) {
@@ -174,6 +183,8 @@ public class Lift {
         }
 
     }
+
+
 
 }
 
