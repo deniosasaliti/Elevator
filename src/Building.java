@@ -22,7 +22,21 @@ public class Building {
     private NavigableSet<Integer> waitToUp = new TreeSet<>();
     private NavigableSet<Integer> waitToDown = new TreeSet<>();
 
+    public NavigableSet<Integer> getWaitToUp() {
+        return waitToUp;
+    }
 
+    public void setWaitToUp(NavigableSet<Integer> waitToUp) {
+        this.waitToUp = waitToUp;
+    }
+
+    public NavigableSet<Integer> getWaitToDown() {
+        return waitToDown;
+    }
+
+    public void setWaitToDown(NavigableSet<Integer> waitToDown) {
+        this.waitToDown = waitToDown;
+    }
 
     public Map<Integer, TreeMap<Integer, Integer>> getFloorDudes() {
         return floorDudes;

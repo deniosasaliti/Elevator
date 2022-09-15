@@ -135,7 +135,10 @@ public class Lift {
             loadDudesIntoElevator();
 
             if (freePlaces > 0) {
-                currentFloor++;
+//                currentFloor = building.getWaitToUp().higher(currentFloor);
+                currentFloor = Math.min(building.getWaitToUp().higher(currentFloor),liftNavigable.higherKey(currentFloor));
+                System.out.println(building.getWaitToUp().higher(currentFloor) + "  WAITERS+_+_+_+_+_+_+_+");
+                System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
             }else currentFloor = liftNavigable.higherKey(currentFloor);
             System.out.println(liftNavigable + " liftNavigable");
 
