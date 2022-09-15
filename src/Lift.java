@@ -44,25 +44,15 @@ public class Lift {
         liftNavigable.remove(floorNumber);
         TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(currentFloor);
 
+        loadDudesIntoElevator();
+
         for (int k=1; k<=countOfDudesToOut; k++) {
             int randomForDude = getRandomForDude(random, 1, building.countOfFloor, currentFloor);
-
-
-//            dudesQue.put(randomForDude,
-//                    dudesQue.containsKey(randomForDude)
-//                            ? dudesQue.put(randomForDude, dudesQue.get(randomForDude) + 1)
-//                            : dudesQue.put(randomForDude, 1));
 
             dudesQue.put(randomForDude,
                     dudesQue.containsKey(randomForDude)
                             ?  dudesQue.get(randomForDude) + 1
                             :  1);
-
-
-
-
-
-
         }
             System.out.println(dudesQue + " DudeQue_____AAAAAAAAAAAAAAAAAAAAAAAAAAA___AAA");
         }
@@ -131,8 +121,9 @@ public class Lift {
             if (currentFloor !=1) {
                 unloadDudesFromElevator();
             }
-
-            loadDudesIntoElevator();
+            if (currentFloor==1) {
+                loadDudesIntoElevator();
+            }
 
             if (freePlaces > 0) {
 //                currentFloor = building.getWaitToUp().higher(currentFloor);
