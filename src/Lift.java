@@ -84,7 +84,7 @@ public class Lift {
                 Integer integer = dudesQue.get(key);
                 int i = integer - freePlaces;
                 dudesQue.put(key,i);
-                liftNavigable.put(key,freePlaces);
+                liftNavigable.put(key,liftNavigable.containsKey(key) ? liftNavigable.get(key) + freePlaces : freePlaces);
                 freePlaces=0;
             }
             System.out.println(dudesQue + " DUDESQUE");
