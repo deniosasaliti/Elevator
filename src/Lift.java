@@ -113,7 +113,7 @@ public class Lift {
     private boolean isElevatorFull(){
        return freePlaces >= 0;
     }
-    private boolean canMove = !liftNavigable.isEmpty();
+
 
 
     public void start(){
@@ -128,8 +128,10 @@ public class Lift {
 
 
 
-        while (!canMove){
+        while (!liftNavigable.isEmpty()){
+
             directionToUp();
+
         }
 
     }
@@ -156,7 +158,7 @@ public class Lift {
         System.out.println("__________________________________________________DIRECTION WAS CHANCHED__________________________________________________");
         System.out.println();
         System.out.println();
-        canMove = true;
+
 
 
     }
@@ -172,10 +174,7 @@ public class Lift {
 //        }
         Integer waiter = building.getWaitToUp().higher(currentFloor);
         Integer higher = liftNavigable.higherKey(currentFloor);
-        if (higher!=null && building.getFloorDudes().get(currentFloor).higherKey(currentFloor)==null
-                && building.getFloorDudes().get(currentFloor).lowerKey(currentFloor)!=null){
-            directionToDown();
-        }else {
+
             if (freePlaces > 0) {
 
                 System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
@@ -183,14 +182,21 @@ public class Lift {
 //                currentFloor = building.getWaitToUp().higher(currentFloor);
                 if (waiter != null)
                     currentFloor = Math.min(waiter, higher);
-                else currentFloor = higher;
+                else if (higher !=null)currentFloor = higher;
 
             } else currentFloor = higher;
             System.out.println(liftNavigable + " liftNavigable");
+
+        if (liftNavigable.isEmpty()){
+            findNewDirection();
         }
+
 
     }
 
+    private void findNewDirection() {
+        if (building.getFloorDudes().get(currentFloor))
+    }
 
 
 }

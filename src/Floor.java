@@ -7,7 +7,9 @@ public class Floor {
     }
 
     private int floorNumber;
-    private int DudesSize;
+
+    private int dudesSizeToUp;
+    private int dudesSizeToDown;
     private NavigableMap<Integer,Integer> floorNavigation = new TreeMap<>();
 
     public int getFloorNumber() {
@@ -18,13 +20,7 @@ public class Floor {
         this.floorNumber = floorNumber;
     }
 
-    public int getDudesSize() {
-        return DudesSize;
-    }
 
-    public void setDudesSize(int dudesSize) {
-        DudesSize = dudesSize;
-    }
 
     public NavigableMap<Integer, Integer> getFloorNavigation() {
         return floorNavigation;
