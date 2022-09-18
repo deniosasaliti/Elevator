@@ -14,6 +14,8 @@ public class Main {
 
         Random random = new Random();
 
+
+
         Building building = new Building(random,min,max);
         Lift lift = new Lift(random,building);
         lift.start();
@@ -24,17 +26,5 @@ public class Main {
 
     }
 
-    public static int getRandomForDude(Random random,int min,int max,int currentFloor){
 
-        if (currentFloor == max) {
-            max--;
-        }
-
-        int number = random.nextInt(max - min) + min;
-        if (number == currentFloor){
-            number++;
-        }
-        System.out.println(number + "  random is");
-        return number;
-    }
 }

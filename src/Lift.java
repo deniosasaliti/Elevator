@@ -1,11 +1,8 @@
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.Random;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Lift {
 
-    private static int maxSize =5;
+
 
     public Lift(Random random,Building building) {
         this.random = random;
@@ -15,13 +12,16 @@ public class Lift {
 
     private int currentElevatorDestination;
     private int freePlaces =5;
+    private static int maxSize =5;
+    private int elevatorDirection =0;
+    private int elevatorDurability = 50;
 
     Building building;
     private Random random;
     private boolean isElevatorStart = false;
 
 
-    private int currentFloor=1;
+    private Floor currentFloor;
     private NavigableMap<Integer,Integer> liftNavigable = new TreeMap<>();
 
 
@@ -48,6 +48,8 @@ public class Lift {
                 System.out.println(freePlaces + "  ______freePlaces_______ ");
                 liftNavigable.remove(floorNumber);
                 TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(currentFloor);
+
+
 
                 loadDudesIntoElevator();
 
@@ -120,20 +122,20 @@ public class Lift {
 
         System.out.println();
         System.out.println(building.countOfFloor + " building.countOfFloor " + liftNavigable.isEmpty());
-
         System.out.println();
 
-
-            loadDudesIntoElevator();
-
+            elevatorDirection = 0;
 
 
-        while (!liftNavigable.isEmpty()){
 
-            directionToUp();
-
+        while (moveUntilElevatorBreaksDown()  && (liftNavigable.isEmpty() && building.getWaitToDown().isEmpty() && building.getWaitToUp().isEmpty())  ){
+            turnOnElevator();
         }
 
+    }
+
+    private boolean moveUntilElevatorBreaksDown() {
+       return elevatorDurability > 0;
     }
 
     private   int getRandomForDude(Random random,int min,int max,int currentFloor){
@@ -152,18 +154,9 @@ public class Lift {
         return number;
     }
 
-    private void directionToDown(){
-        System.out.println();
-        System.out.println();
-        System.out.println("__________________________________________________DIRECTION WAS CHANCHED__________________________________________________");
-        System.out.println();
-        System.out.println();
 
 
-
-    }
-
-    private void directionToUp(){
+    private void turnOnElevator(){
         System.out.println("we can move " +  currentFloor);
 
         if (currentFloor !=1) {
@@ -172,20 +165,21 @@ public class Lift {
 //        if (currentFloor==1) {
 //            loadDudesIntoElevator();
 //        }
-        Integer waiter = building.getWaitToUp().higher(currentFloor);
-        Integer higher = liftNavigable.higherKey(currentFloor);
+        Floor waiter = building.getWaitToUp().higher(currentFloor);
+        Integer higher = liftNavigable.higherKey(currentFloor.getFloorNumber());
 
             if (freePlaces > 0) {
-
                 System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
                 System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
 //                currentFloor = building.getWaitToUp().higher(currentFloor);
-                if (waiter != null)
-                    currentFloor = Math.min(waiter, higher);
-                else if (higher !=null)currentFloor = higher;
-
-            } else currentFloor = higher;
+                if (waiter != null && waiter.getFloorNumber() < higher){
+                    currentFloor = waiter;
+                }else if (higher!=null){
+                    currentFloor = higher;
+                }
+            }
             System.out.println(liftNavigable + " liftNavigable");
+
 
         if (liftNavigable.isEmpty()){
             findNewDirection();
@@ -195,7 +189,45 @@ public class Lift {
     }
 
     private void findNewDirection() {
-        if (building.getFloorDudes().get(currentFloor))
+        if (!currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()) {
+
+            NavigableMap<Integer, ArrayList<Dude>> dudesToDown = currentFloor.getDudesToDown();
+            NavigableMap<Integer, ArrayList<Dude>> dudesToUp = currentFloor.getDudesToUp();
+
+           elevatorDirection = dudesToUp.size() < dudesToDown.size() ? 0 : 1;
+        }else  if (currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()){
+            elevatorDirection = 1;
+        }else if (!currentFloor.getDudesToDown().isEmpty() && currentFloor.getDudesToUp().isEmpty()){
+            elevatorDirection=0;
+        }else {
+            if (elevatorDirection == 0) {
+                Floor nextHigherToUp = building.getWaitToUp().higher(currentFloor);
+                Floor nextHigherToDown = building.getWaitToDown().higher(currentFloor);
+
+
+                if (nextHigherToUp == null && nextHigherToDown == null) {
+                    changeDirection();
+                }//else keepDirection
+            }else {
+                Floor  nextLowerToUp = building.getWaitToUp().lower(currentFloor);
+                Floor nextLowerToDown = building.getWaitToDown().lower(currentFloor);
+
+                if (nextLowerToUp == null && nextLowerToDown == null){
+                    changeDirection();
+                }//else keepDirection
+            }
+        }
+
+
+    }
+
+    private void goneDownStairs(){
+
+    }
+
+    private void changeDirection(){
+
+        elevatorDirection = elevatorDirection == 0 ? 1 : 0;
     }
 
 

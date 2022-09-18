@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Floor {
+public class Floor implements Comparable<Floor> {
 
     public Floor(int floorNumber) {
         this.floorNumber = floorNumber;
@@ -8,9 +8,26 @@ public class Floor {
 
     private int floorNumber;
 
-    private int dudesSizeToUp;
-    private int dudesSizeToDown;
-    private NavigableMap<Integer,Integer> floorNavigation = new TreeMap<>();
+
+    private NavigableMap<Integer,ArrayList<Dude>> dudesToUp  = new TreeMap<>();
+
+    private NavigableMap<Integer,ArrayList<Dude>> dudesToDown = new TreeMap<>();
+
+    public NavigableMap<Integer, ArrayList<Dude>> getDudesToUp() {
+        return dudesToUp;
+    }
+
+    public void setDudesToUp(NavigableMap<Integer, ArrayList<Dude>> dudesToUp) {
+        this.dudesToUp = dudesToUp;
+    }
+
+    public NavigableMap<Integer, ArrayList<Dude>> getDudesToDown() {
+        return dudesToDown;
+    }
+
+    public void setDudesToDown(NavigableMap<Integer, ArrayList<Dude>> dudesToDown) {
+        this.dudesToDown = dudesToDown;
+    }
 
     public int getFloorNumber() {
         return floorNumber;
@@ -21,12 +38,8 @@ public class Floor {
     }
 
 
-
-    public NavigableMap<Integer, Integer> getFloorNavigation() {
-        return floorNavigation;
-    }
-
-    public void setFloorNavigation(NavigableMap<Integer, Integer> floorNavigation) {
-        this.floorNavigation = floorNavigation;
+    @Override
+    public int compareTo(Floor o) {
+      return   Integer.compare(floorNumber,o.floorNumber);
     }
 }

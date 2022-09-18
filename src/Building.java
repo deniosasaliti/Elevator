@@ -17,36 +17,77 @@ public class Building {
     private int min;
     private int max;
     int countOfFloor;
-    private Map<Integer,TreeMap<Integer,Integer>> floorDudes;
+    private Map<Integer,Floor> floorDudes;
 
-    private NavigableSet<Integer> waitToUp = new TreeSet<>();
-    private NavigableSet<Integer> waitToDown = new TreeSet<>();
+    private NavigableSet<Floor> QueueForElevator = new TreeSet<>();
 
-    public NavigableSet<Integer> getWaitToUp() {
-        return waitToUp;
+
+    private NavigableSet<Floor> waitToUp = new TreeSet<>();
+    private NavigableSet<Floor> waitToDown = new TreeSet<>();
+
+    public Random getRandom() {
+        return random;
     }
 
-    public void setWaitToUp(NavigableSet<Integer> waitToUp) {
-        this.waitToUp = waitToUp;
+    public void setRandom(Random random) {
+        this.random = random;
     }
 
-    public NavigableSet<Integer> getWaitToDown() {
-        return waitToDown;
+    public int getMin() {
+        return min;
     }
 
-    public void setWaitToDown(NavigableSet<Integer> waitToDown) {
-        this.waitToDown = waitToDown;
+    public void setMin(int min) {
+        this.min = min;
     }
 
-    public Map<Integer, TreeMap<Integer, Integer>> getFloorDudes() {
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public int getCountOfFloor() {
+        return countOfFloor;
+    }
+
+    public void setCountOfFloor(int countOfFloor) {
+        this.countOfFloor = countOfFloor;
+    }
+
+    public Map<Integer, Floor> getFloorDudes() {
         return floorDudes;
     }
 
-
-    public void setFloorDudes(Map<Integer, TreeMap<Integer, Integer>> floorDudes) {
+    public void setFloorDudes(Map<Integer, Floor> floorDudes) {
         this.floorDudes = floorDudes;
     }
 
+    public NavigableSet<Floor> getQueueForElevator() {
+        return QueueForElevator;
+    }
+
+    public void setQueueForElevator(NavigableSet<Floor> queueForElevator) {
+        QueueForElevator = queueForElevator;
+    }
+
+    public NavigableSet<Floor> getWaitToUp() {
+        return waitToUp;
+    }
+
+    public void setWaitToUp(NavigableSet<Floor> waitToUp) {
+        this.waitToUp = waitToUp;
+    }
+
+    public NavigableSet<Floor> getWaitToDown() {
+        return waitToDown;
+    }
+
+    public void setWaitToDown(NavigableSet<Floor> waitToDown) {
+        this.waitToDown = waitToDown;
+    }
 
     private void fillMap(){
                 for (int i = 1; i <=countOfFloor; i++) {
