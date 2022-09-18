@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.NavigableMap;
-import java.util.Random;
-import java.util.TreeMap;
+import com.sun.jdi.IntegerType;
+
+import java.util.*;
 
 public class Main {
         public static int min = 5;

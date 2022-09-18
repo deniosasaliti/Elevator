@@ -9,23 +9,23 @@ public class Floor implements Comparable<Floor> {
     private int floorNumber;
 
 
-    private NavigableMap<Integer,ArrayList<Dude>> dudesToUp  = new TreeMap<>();
+    private NavigableMap<Integer,LinkedList<Dude>> dudesToUp  = new TreeMap<>();
 
-    private NavigableMap<Integer,ArrayList<Dude>> dudesToDown = new TreeMap<>();
+    private NavigableMap<Integer,LinkedList<Dude>> dudesToDown = new TreeMap<>();
 
-    public NavigableMap<Integer, ArrayList<Dude>> getDudesToUp() {
+    public NavigableMap<Integer, LinkedList<Dude>> getDudesToUp() {
         return dudesToUp;
     }
 
-    public void setDudesToUp(NavigableMap<Integer, ArrayList<Dude>> dudesToUp) {
+    public void setDudesToUp(NavigableMap<Integer, LinkedList<Dude>> dudesToUp) {
         this.dudesToUp = dudesToUp;
     }
 
-    public NavigableMap<Integer, ArrayList<Dude>> getDudesToDown() {
+    public NavigableMap<Integer, LinkedList<Dude>> getDudesToDown() {
         return dudesToDown;
     }
 
-    public void setDudesToDown(NavigableMap<Integer, ArrayList<Dude>> dudesToDown) {
+    public void setDudesToDown(NavigableMap<Integer, LinkedList<Dude>> dudesToDown) {
         this.dudesToDown = dudesToDown;
     }
 

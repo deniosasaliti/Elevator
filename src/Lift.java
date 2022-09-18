@@ -22,7 +22,7 @@ public class Lift {
 
 
     private Floor currentFloor;
-    private NavigableMap<Integer,Integer> liftNavigable = new TreeMap<>();
+    private NavigableMap<Integer,List<Dude>> liftNavigable = new TreeMap<>();
 
 
 
@@ -71,29 +71,32 @@ public class Lift {
 
     private   void loadDudesIntoElevator(){
 
-        int floorNumber = currentFloor;
+        int floorNumber = currentFloor.getFloorNumber();
         System.out.println(building + "  building  " + currentFloor + " currentFloor");
-        TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(floorNumber);
+//        TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(floorNumber);
+        NavigableMap<Integer, LinkedList<Dude>> dudesQue = elevatorDirection == 0 ? currentFloor.getDudesToUp() : currentFloor.getDudesToDown();
         System.out.println(dudesQue + " QUE_________");
-        Integer higherKey = dudesQue.higherKey(currentFloor);
+        Integer higherKey = dudesQue.firstKey(); //higherKey means the key higher than the current
+
 
         while (freePlaces > 0 && higherKey !=null ){
-
+            LinkedList<Dude> dudes = dudesQue.get(higherKey);
             System.out.println(higherKey + " NEXT DUDE IS");
 
             Integer key = higherKey;
-            Integer value = dudesQue.get(higherKey);
+            Integer amountOfDudes = dudes.size();
 
 
-            if (value <= freePlaces){
+            if (amountOfDudes <= freePlaces){
                 dudesQue.remove(key);
-                freePlaces -=value;
-                liftNavigable.put(key,liftNavigable.containsKey(key) ? liftNavigable.get(key) + value : value);
+                freePlaces -=amountOfDudes;
+//                liftNavigable.put(key,liftNavigable.containsKey(key) ? liftNavigable.get(key) + value : value);
+                liftNavigable.put(key,liftNavigable.containsKey(key) ? addDudes(liftNavigable.get(key),dudes) : new ArrayList<>(dudes));
             }else {
-                Integer integer = dudesQue.get(key);
-                int i = integer - freePlaces;
-                dudesQue.put(key,i);
-                liftNavigable.put(key,liftNavigable.containsKey(key) ? liftNavigable.get(key) + freePlaces : freePlaces);
+//                Integer integer = amountOfDudes - freePlaces;
+//                int i = integer - freePlaces;
+//                dudesQue.put(key,i);
+                liftNavigable.put(key,liftNavigable.containsKey(key) ? addDudes(liftNavigable.get(key),dudes, freePlaces) : addDudes(true,freePlaces));
                 freePlaces=0;
             }
             System.out.println(dudesQue + " DUDESQUE");
@@ -109,7 +112,18 @@ public class Lift {
         }
     }
 
+    private List<Dude> addDudes(List<Dude> to,List<Dude> from) {
+         to.addAll(from);
+         return to;
+    }
+    private List<Dude> addDudes(List<Dude> to,List<Dude> from, int numberOfDudes){
 
+        return to;
+    }
+    private List<Dude> addDudes(boolean isNew, int numberOfDudes){
+
+        return to;
+    }
 
 
     private boolean isElevatorFull(){
@@ -128,7 +142,7 @@ public class Lift {
 
 
 
-        while (moveUntilElevatorBreaksDown()  && (liftNavigable.isEmpty() && building.getWaitToDown().isEmpty() && building.getWaitToUp().isEmpty())  ){
+        while (moveUntilElevatorBreaksDown()  && !(liftNavigable.isEmpty() && building.getWaitToDown().isEmpty() && building.getWaitToUp().isEmpty())){
             turnOnElevator();
         }
 
@@ -164,20 +178,7 @@ public class Lift {
             loadDudesIntoElevator();
         }
         //stage two / find next floor to upload dudes
-        Floor waiter = elevatorDirection == 0 ? building.getWaitToUp().higher(currentFloor) : building.getWaitToUp().lower(currentFloor);
-        Integer nextNearestFloor = elevatorDirection == 0 ? liftNavigable.higherKey(currentFloor.getFloorNumber()) : liftNavigable.lowerKey(currentFloor.getFloorNumber());
-
-            if (freePlaces > 0) {
-                System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
-                System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
-//                currentFloor = building.getWaitToUp().higher(currentFloor);
-                if (waiter != null && (elevatorDirection==0 ? waiter.getFloorNumber() < nextNearestFloor : waiter.getFloorNumber() > nextNearestFloor)){
-                    currentFloor = waiter;
-                }else if (nextNearestFloor!=null){
-                    currentFloor = building.getFloorDudes().get(nextNearestFloor);
-                }
-            }
-            System.out.println(liftNavigable + " liftNavigable");
+        findNextFloorToUploadDudes();
         //stage three
         if (currentFloor.getFloorNumber() !=1) {
             unloadDudesFromElevator();
@@ -194,8 +195,8 @@ public class Lift {
     private void findNewDirection() {
         if (!currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()) {
 
-            NavigableMap<Integer, ArrayList<Dude>> dudesToDown = currentFloor.getDudesToDown();
-            NavigableMap<Integer, ArrayList<Dude>> dudesToUp = currentFloor.getDudesToUp();
+            NavigableMap<Integer, LinkedList<Dude>> dudesToDown = currentFloor.getDudesToDown();
+            NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
 
            elevatorDirection = dudesToUp.size() < dudesToDown.size() ? 0 : 1;
         }else  if (currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()){
@@ -224,12 +225,9 @@ public class Lift {
 
     }
 
-    private void goneDownStairs(){
 
-    }
 
     private void changeDirection(){
-
         elevatorDirection = elevatorDirection == 0 ? 1 : 0;
     }
 
