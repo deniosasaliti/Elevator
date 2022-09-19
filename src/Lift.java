@@ -35,15 +35,15 @@ public class Lift {
     }
     private   void unloadDudesFromElevator(){
 
-        int floorNumber = currentFloor;
-        Integer countOfDudesToOut = liftNavigable.get(floorNumber);
+        int floorNumber = currentFloor.getFloorNumber();
+        List<Dude> countOfDudesToOut = liftNavigable.get(floorNumber);
         if (freePlaces > 0 && countOfDudesToOut==null){
             loadDudesIntoElevator();
             System.out.println("was free");
         }else {
 
             if (countOfDudesToOut != null) {
-                freePlaces += countOfDudesToOut;
+                freePlaces += countOfDudesToOut.size();
                 System.out.println(countOfDudesToOut + "  ______countOfDudesToOut_______ ");
                 System.out.println(freePlaces + "  ______freePlaces_______ ");
                 liftNavigable.remove(floorNumber);
@@ -84,7 +84,7 @@ public class Lift {
             System.out.println(higherKey + " NEXT DUDE IS");
 
             Integer key = higherKey;
-            Integer amountOfDudes = dudes.size();
+            int amountOfDudes = dudes.size();
 
 
             if (amountOfDudes <= freePlaces){
@@ -96,7 +96,7 @@ public class Lift {
 //                Integer integer = amountOfDudes - freePlaces;
 //                int i = integer - freePlaces;
 //                dudesQue.put(key,i);
-                liftNavigable.put(key,liftNavigable.containsKey(key) ? addDudes(liftNavigable.get(key),dudes, freePlaces) : addDudes(true,freePlaces));
+                liftNavigable.put(key,liftNavigable.containsKey(key) ? addDudes(liftNavigable.get(key),dudes, freePlaces) : addDudes(new ArrayList<>(),dudes,freePlaces));
                 freePlaces=0;
             }
             System.out.println(dudesQue + " DUDESQUE");
@@ -110,20 +110,21 @@ public class Lift {
             higherKey = dudesQue.higherKey(key);
 
         }
+        findNextFloorToUploadDudes();
     }
 
     private List<Dude> addDudes(List<Dude> to,List<Dude> from) {
          to.addAll(from);
          return to;
     }
-    private List<Dude> addDudes(List<Dude> to,List<Dude> from, int numberOfDudes){
+    private List<Dude> addDudes(List<Dude> to,LinkedList<Dude> from, int numberOfDudes){
 
+        for (int i = 0; i < numberOfDudes; i++){
+            to.add(from.pollFirst());
+        }
         return to;
     }
-    private List<Dude> addDudes(boolean isNew, int numberOfDudes){
 
-        return to;
-    }
 
 
     private boolean isElevatorFull(){
@@ -178,10 +179,12 @@ public class Lift {
             loadDudesIntoElevator();
         }
         //stage two / find next floor to upload dudes
-        findNextFloorToUploadDudes();
+//        findNextFloorToUploadDudes();
         //stage three
         if (currentFloor.getFloorNumber() !=1) {
-            unloadDudesFromElevator();
+
+                unloadDudesFromElevator();
+
         }
 
         //stage four /choose a new direction or keep moving in the current direction
@@ -211,7 +214,8 @@ public class Lift {
 
                 if (nextHigherToUp == null && nextHigherToDown == null) {
                     changeDirection();
-                }//else keepDirection
+
+                }
             }else {
                 Floor  nextLowerToUp = building.getWaitToUp().lower(currentFloor);
                 Floor nextLowerToDown = building.getWaitToDown().lower(currentFloor);
@@ -220,6 +224,7 @@ public class Lift {
                     changeDirection();
                 }//else keepDirection
             }
+            findNextFloorToUploadDudes();
         }
 
 
@@ -244,6 +249,8 @@ public class Lift {
             }else if (nextNearestFloor!=null){
                 currentFloor = building.getFloorDudes().get(nextNearestFloor);
             }
+        }else {
+            currentFloor = waiter;
         }
     }
 
