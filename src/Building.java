@@ -97,15 +97,28 @@ public class Building {
             System.out.println();
 
 
-            TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
-                for (int k=1; k <= countOfDudes;k++){
+//            TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
+                    Floor floor = new Floor(i);
 
+                for (int k=1; k <= countOfDudes;k++){
+                    int id = (int) Math.pow(10, Math.floor(Math.log10(i))+1)*k + i;
+                    Dude dude = new Dude(id);
 
                     int randomForDude = getRandomForDude(random, 1, countOfFloor, i);
                     if (randomForDude > i){
-                        waitToUp.add(i);
+                        waitToUp.add(floor);
+                        NavigableMap<Integer, LinkedList<Dude>> dudesToUp = floor.getDudesToUp();
+                        LinkedList<Dude> dudes = dudesToUp.get(randomForDude);
+                        dudes = dudes == null ? new LinkedList<>() : dudes;
+                        dudes.addLast(dude);
+                        dudesToUp.put(floor.getFloorNumber(),dudes);
                     }else {
-                        waitToDown.add(i);
+                        NavigableMap<Integer, LinkedList<Dude>> dudesToDown = floor.getDudesToDown();
+                        LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
+                        dudes = dudes == null ? new LinkedList<>() : dudes;
+                        dudes.addLast(dude);
+                        dudesToDown.put(floor.getFloorNumber(),dudes);
+                        waitToDown.add(floor);
                     }
 
                     integerIntegerTreeMap.put(randomForDude,integerIntegerTreeMap

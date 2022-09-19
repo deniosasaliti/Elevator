@@ -26,16 +26,11 @@ public class Lift {
 
 
 
-    public NavigableMap<Integer, Integer> getLiftNavigable() {
-        return liftNavigable;
-    }
 
-    public void setLiftNavigable(NavigableMap<Integer, Integer> liftNavigable) {
-        this.liftNavigable = liftNavigable;
-    }
     private   void unloadDudesFromElevator(){
 
         int floorNumber = currentFloor.getFloorNumber();
+        int tempCurrentFloor;
         List<Dude> countOfDudesToOut = liftNavigable.get(floorNumber);
         if (freePlaces > 0 && countOfDudesToOut==null){
             loadDudesIntoElevator();
@@ -44,24 +39,35 @@ public class Lift {
 
             if (countOfDudesToOut != null) {
                 freePlaces += countOfDudesToOut.size();
-                System.out.println(countOfDudesToOut + "  ______countOfDudesToOut_______ ");
+                System.out.println(countOfDudesToOut.size() + "  ______countOfDudesToOut_______ ");
                 System.out.println(freePlaces + "  ______freePlaces_______ ");
                 liftNavigable.remove(floorNumber);
-                TreeMap<Integer, Integer> dudesQue = building.getFloorDudes().get(currentFloor);
 
+
+                NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
+                NavigableMap<Integer, LinkedList<Dude>> dudesToDown = currentFloor.getDudesToDown();
 
 
                 loadDudesIntoElevator();
 
-                for (int k = 1; k <= countOfDudesToOut; k++) {
-                    int randomForDude = getRandomForDude(random, 1, building.countOfFloor, currentFloor);
+                for (int k = 1; k <= countOfDudesToOut.size(); k++) {
+                    int randomForDude = getRandomForDude(random, 1, building.countOfFloor, floorNumber);
 
-                    dudesQue.put(randomForDude,
-                            dudesQue.containsKey(randomForDude)
-                                    ? dudesQue.get(randomForDude) + 1
-                                    : 1);
+                    if (randomForDude > floorNumber){
+                        LinkedList<Dude> dudes = dudesToUp.get(randomForDude);
+                        dudes = dudes == null ? new LinkedList<>() : dudes;
+                        dudes.addLast(countOfDudesToOut.get(k-1));
+                        dudesToUp.put(randomForDude,dudes);
+                    }else {
+                        LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
+                        dudes = dudes == null ? new LinkedList<>() : dudes;
+                        dudes.addLast(countOfDudesToOut.get(k-1));
+                        dudesToDown.put(randomForDude,dudes);
+                    }
+
+
                 }
-                System.out.println(dudesQue + " DudeQue_____AAAAAAAAAAAAAAAAAAAAAAAAAAA___AAA");
+
             }
             System.out.println(currentFloor + "   currentFloor int out____________________!!!____");
         }
