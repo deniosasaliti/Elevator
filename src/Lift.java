@@ -8,7 +8,7 @@ public class Lift {
         this.random = random;
         this.building = building;
         currentFloor =  building.getWaitToUp().first();
-        elevatorDurability = building.countOfFloor-1;
+        elevatorDurability = 50;
     }
 
 
