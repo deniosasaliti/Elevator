@@ -99,39 +99,61 @@ public class Building {
 
 //            TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
                     Floor floor = new Floor(i);
+                    floorDudes.put(i,floor);
 
                 for (int k=1; k <= countOfDudes;k++){
                     int id = (int) Math.pow(10, Math.floor(Math.log10(i))+1)*k + i;
                     Dude dude = new Dude(id);
 
+
+
                     int randomForDude = getRandomForDude(random, 1, countOfFloor, i);
                     if (randomForDude > i){
                         waitToUp.add(floor);
-                        NavigableMap<Integer, LinkedList<Dude>> dudesToUp = floor.getDudesToUp();
-                        LinkedList<Dude> dudes = dudesToUp.get(randomForDude);
+                        NavigableMap<Integer, LinkedList<Dude>> dudesToUp =  floor.getDudesToUp();
+                        LinkedList<Dude> dudes =  dudesToUp.get(randomForDude);
+                        System.out.println("DUDES IS_UP   " + dudes);
                         dudes = dudes == null ? new LinkedList<>() : dudes;
+
                         dudes.addLast(dude);
-                        dudesToUp.put(floor.getFloorNumber(),dudes);
+                        if (dudesToUp.containsKey(floor.getFloorNumber())){
+                            System.out.println("ON IF UPPPPPP");
+                            dudesToUp.get(randomForDude).addLast(dude);
+                        }else{
+                            dudesToUp.put(randomForDude,dudes);
+                        }
+
+                        System.out.println(dudesToUp + " MAP_UP IS");
                     }else {
                         NavigableMap<Integer, LinkedList<Dude>> dudesToDown = floor.getDudesToDown();
                         LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
+
                         dudes = dudes == null ? new LinkedList<>() : dudes;
+
                         dudes.addLast(dude);
-                        dudesToDown.put(floor.getFloorNumber(),dudes);
+                        if (dudesToDown.containsKey(floor.getFloorNumber())){
+
+                            dudesToDown.get(randomForDude).addLast(dude);
+                        }else {
+                            dudesToDown.put(randomForDude,dudes);
+                        }
+
                         waitToDown.add(floor);
+
+                        System.out.println(dudesToDown + " MAP_DOWN IS");
                     }
 
-                    integerIntegerTreeMap.put(randomForDude,integerIntegerTreeMap
-                            .containsKey(randomForDude) ?
-                            integerIntegerTreeMap.get(randomForDude)+1 : 1);
+
 
 
                 }
-                    floorDudes.put(i,integerIntegerTreeMap);
-                    System.out.println(integerIntegerTreeMap + " MAP IS");
+
+
 
 
         }
+
+
     }
 
     private   int getRandomForDude(Random random,int min,int max,int currentFloor){

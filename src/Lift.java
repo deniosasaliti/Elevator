@@ -7,6 +7,7 @@ public class Lift {
     public Lift(Random random,Building building) {
         this.random = random;
         this.building = building;
+        currentFloor =  building.getWaitToUp().first();
     }
 
 
@@ -14,7 +15,7 @@ public class Lift {
     private int freePlaces =5;
     private static int maxSize =5;
     private int elevatorDirection =0;
-    private int elevatorDurability = 50;
+    private int elevatorDurability = 6;
 
     Building building;
     private Random random;
@@ -22,6 +23,7 @@ public class Lift {
 
 
     private Floor currentFloor;
+
     private NavigableMap<Integer,List<Dude>> liftNavigable = new TreeMap<>();
 
 
@@ -76,6 +78,10 @@ public class Lift {
 
 
     private   void loadDudesIntoElevator(){
+
+        System.out.println(" IN LOAD ");
+        System.out.println(currentFloor.getDudesToDown() + " DUDES TO DOWN");
+        System.out.println(currentFloor.getDudesToUp() + " DUDES TO UP");
 
         int floorNumber = currentFloor.getFloorNumber();
         System.out.println(building + "  building  " + currentFloor + " currentFloor");
@@ -243,6 +249,9 @@ public class Lift {
     }
 
     private void findNextFloorToUploadDudes(){
+
+        elevatorDurability--;
+        System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
         Floor waiter = elevatorDirection == 0 ? building.getWaitToUp().higher(currentFloor) : building.getWaitToUp().lower(currentFloor);
         Integer nextNearestFloor = elevatorDirection == 0 ? liftNavigable.higherKey(currentFloor.getFloorNumber()) : liftNavigable.lowerKey(currentFloor.getFloorNumber());
 
@@ -250,10 +259,10 @@ public class Lift {
             System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
             System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
 //                currentFloor = building.getWaitToUp().higher(currentFloor);
-            if (waiter != null && (elevatorDirection==0 ? waiter.getFloorNumber() < nextNearestFloor : waiter.getFloorNumber() > nextNearestFloor)){
+            if (waiter != null && (elevatorDirection==0 ? waiter.getFloorNumber() <= nextNearestFloor : waiter.getFloorNumber() >= nextNearestFloor)){
                 currentFloor = waiter;
             }else if (nextNearestFloor!=null){
-                currentFloor = building.getFloorDudes().get(nextNearestFloor);
+                currentFloor =   building.getFloorDudes().get(nextNearestFloor);
             }
         }else {
             currentFloor = waiter;

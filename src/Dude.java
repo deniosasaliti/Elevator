@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Dude {
+public class Dude  {
 
 
     public Dude(int id) {
@@ -16,4 +16,13 @@ public class Dude {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Dude{" +
+                "id=" + id +
+                '}';
+    }
+
+
 }
