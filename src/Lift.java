@@ -13,14 +13,14 @@ public class Lift {
 
 
     private int currentElevatorDestination;
-    private int freePlaces =5;
-    private static int maxSize =5;
+    private int freePlaces = 5;
+
     private int elevatorDirection =0;
     private int elevatorDurability;
 
     Building building;
     private Random random;
-    private boolean isElevatorStart = false;
+
 
 
     private Floor currentFloor;
@@ -36,7 +36,7 @@ public class Lift {
 
         System.out.println(notEmptyDirection + " NOT EMPTY _______________AAAA");
         int floorNumber = currentFloor.getFloorNumber();
-        int tempCurrentFloor;
+
         List<Dude> countOfDudesToOut = liftNavigable.get(floorNumber);
         if (freePlaces > 0 && countOfDudesToOut==null){
             if (liftNavigable.isEmpty()){
@@ -59,7 +59,9 @@ public class Lift {
                 NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
                 NavigableMap<Integer, LinkedList<Dude>> dudesToDown = currentFloor.getDudesToDown();
 
+
                 //choose a new direction or keep moving in the current direction
+                System.out.println(liftNavigable.isEmpty() + " LIFT IS EMPTY___________________________________");
                 if (liftNavigable.isEmpty()){
 
                     findNewDirection();
@@ -125,6 +127,9 @@ public class Lift {
 
                 if (amountOfDudes <= freePlaces) {
                     dudesQue.remove(key);
+                    NavigableSet<Floor> removeWaitingDudes = elevatorDirection == 0 ? building.getWaitToUp() : building.getWaitToDown();
+                    removeWaitingDudes.remove(currentFloor);
+
                     freePlaces -= amountOfDudes;
 //                liftNavigable.put(key,liftNavigable.containsKey(key) ? liftNavigable.get(key) + value : value);
                     liftNavigable.put(key, liftNavigable.containsKey(key) ? addDudes(liftNavigable.get(key), dudes) : new ArrayList<>(dudes));
@@ -146,6 +151,7 @@ public class Lift {
 
             }
         }
+        System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
         findNextFloorToUploadDudes();
     }
 
@@ -216,11 +222,11 @@ public class Lift {
         }
 
         //stage three
-        if (currentFloor.getFloorNumber() !=1) {
+
 
                 unloadDudesFromElevator();
 
-        }
+
 
 
 
@@ -258,7 +264,7 @@ public class Lift {
                     changeDirection();
                 }//else keepDirection
             }
-            findNextFloorToUploadDudes();
+//            findNextFloorToUploadDudes();
         }
 
 
@@ -273,10 +279,10 @@ public class Lift {
     private void findNextFloorToUploadDudes(){
 
         elevatorDurability--;
-        System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
+//        System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
         Floor waiter = elevatorDirection == 0 ? building.getWaitToUp().higher(currentFloor) : building.getWaitToUp().lower(currentFloor);
         Integer nextNearestFloor = elevatorDirection == 0 ? liftNavigable.higherKey(currentFloor.getFloorNumber()) : liftNavigable.lowerKey(currentFloor.getFloorNumber());
-
+        nextNearestFloor = nextNearestFloor == null ? Integer.MAX_VALUE : nextNearestFloor;
         if (freePlaces > 0) {
             System.out.println(waiter + "  WAITERS+_+_+_+_+_+_+_+   " + building.getWaitToUp());
             System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
