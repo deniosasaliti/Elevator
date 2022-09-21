@@ -20,6 +20,7 @@ public class Lift {
 
     Building building;
     private Random random;
+    private boolean isStart = true;
 
 
 
@@ -65,11 +66,16 @@ public class Lift {
                 if (liftNavigable.isEmpty()){
 
                     findNewDirection();
-                    System.out.println("elevator is empty// new direction is  "  + elevatorDirection );
+                    findNextFloorToUploadDudes();
+                    System.out.println("elevator is empty// new direction is  "  + elevatorDirection + "  current floor is-->>" + currentFloor   );
+                    System.out.println();
+
+
                 }
 
 
-                    loadDudesIntoElevator();
+                        loadDudesIntoElevator();
+
 
 
 
@@ -94,7 +100,7 @@ public class Lift {
                 }
 
             }
-            System.out.println(currentFloor + "   currentFloor int out____________________!!!____");
+            System.out.println(floorNumber + "   currentFloor int out____________________!!!____");
         }
     }
 
@@ -216,10 +222,17 @@ public class Lift {
 
 
     private void turnOnElevator(){
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
         System.out.println("we can move " +  currentFloor);
 
         //stage one
-        if (currentFloor.getFloorNumber() == 1) {
+        if (isStart) {
+            System.out.println("________________________________START_________________________________");
+            isStart = false;
             loadDudesIntoElevator();
         }
 
