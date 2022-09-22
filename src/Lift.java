@@ -64,8 +64,14 @@ public class Lift {
                 //choose a new direction or keep moving in the current direction
                 System.out.println(liftNavigable.isEmpty() + " LIFT IS EMPTY___________________________________");
                 if (liftNavigable.isEmpty()){
+                    if (!isCurrentFloorEmpty()){
+                        findNewDirection();
+                    }else {
+                        findNextFloorWhenElevatorIsEmpty();
+                        findNewDirection();
+                    }
 
-                    findNewDirection();
+
 
                     System.out.println("elevator is empty// new direction is  "  + elevatorDirection + "  current floor is-->>" + currentFloor   );
                     System.out.println();
@@ -104,6 +110,9 @@ public class Lift {
         }
     }
 
+    private boolean isCurrentFloorEmpty() {
+       return currentFloor.getDudesToDown().isEmpty() && currentFloor.getDudesToUp().isEmpty();
+    }
 
 
     private   void loadDudesIntoElevator(){
@@ -249,12 +258,23 @@ public class Lift {
     }
 
     private void findNewDirection() {
-        if (!currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()) {
 
+
+
+        if (!currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()) {
             NavigableMap<Integer, LinkedList<Dude>> dudesToDown = currentFloor.getDudesToDown();
             NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
 
-            elevatorDirection = dudesToUp.size() > dudesToDown.size() ? 0 : 1;
+
+//            elevatorDirection = dudesToUp.size() > dudesToDown.size() ? 0 : 1;
+
+            if (dudesToUp.size() > dudesToDown.size()){
+                elevatorDirection = 0;
+            } else if (dudesToUp.size() < dudesToDown.size()) {
+                elevatorDirection = 1;
+            }else {
+                changeDirection();
+            }
 
 
         }else  if (currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()){
@@ -273,22 +293,50 @@ public class Lift {
                     int a = nextHigherToUp.getFloorNumber() - currentFloor.getFloorNumber();
                     int b = currentFloor.getFloorNumber() - nextHigherToDown.getFloorNumber();
 
+
+
                     if (a < b){
-                        elevatorDirection =0;
                         currentFloor = building.getWaitToUp().higher(currentFloor);
+
                     }else {
-                        elevatorDirection =1;
                         currentFloor = building.getWaitToDown().lower(currentFloor);
+
+                    }
+
+                    NavigableMap<Integer, LinkedList<Dude>> dudesToDown = currentFloor.getDudesToDown();
+                    NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
+
+                    if (dudesToUp.size() > dudesToDown.size()){
+                        elevatorDirection = 0;
+                    } else if (dudesToUp.size() < dudesToDown.size()) {
+                        elevatorDirection = 1;
+                    }else {
+                        changeDirection();
                     }
 
 
                 }else  if (nextHigherToUp == null && nextHigherToDown != null){
 
-                    elevatorDirection =1;
                     currentFloor = building.getWaitToDown().lower(currentFloor);
+
+                    if (dudesToUp.size() > dudesToDown.size()){
+                        elevatorDirection = 0;
+                    } else if (dudesToUp.size() < dudesToDown.size()) {
+                        elevatorDirection = 1;
+                    }else {
+                        changeDirection();
+                    }
+
                 }else  if (nextHigherToUp != null && nextHigherToDown == null){
-                    elevatorDirection =0;
+
                     currentFloor = building.getWaitToUp().higher(currentFloor);
+
+                    if (dudesToUp.size() > dudesToDown.size()){
+                        elevatorDirection = 0;
+                    } else if (dudesToUp.size() < dudesToDown.size()) {
+                        elevatorDirection = 1;
+                    }
+
                 }
 
 
