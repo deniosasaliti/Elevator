@@ -33,30 +33,28 @@ public class ConsoleLogPrintUI {
      for (int k =0; k < 5; k++){
 
          Dude dude = dudes.pollFirst();
-         if (dude !=null) {
+         if (dude !=null && k ==1) {
+             System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21C8");
 
+         } else if (dude !=null && k ==3){
+             System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21CA");
 
-             if (k ==1){
-                 System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21C8");
-             }else if (k==3){
-                 System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21CA");
-             } else{
-                 System.out.println("|"+"\u263A"+"       |");
-             }
-
-
-
-         } else  {
-             if (k==1){
-                 System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21C8" );
-             }else if (k==3){
-                 System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21CA" );
-             }else {
-                 System.out.println("|" + "\u2009     "+ "    |");
-             }
-
+         }else if (dude != null){
+             System.out.println("|"+"\u263A"+"       |");
+         }else if (k == 1){
+             System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21C8" );
+         }
+         else if (k == 3) {
+             System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21CA" );
+         }else {
+             System.out.println("|" + "\u2009     "+ "    |");
          }
      }
+
+
+
+
+
      System.out.println("-----------");
 
 
@@ -111,3 +109,30 @@ public class ConsoleLogPrintUI {
 
 
 
+//     for (int k =0; k < 5; k++){
+//
+//        Dude dude = dudes.pollFirst();
+//        if (dude !=null) {
+//
+//
+//        if (k ==1){
+//        System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21C8");
+//        }else if (k==3){
+//        System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21CA");
+//        } else{
+//        System.out.println("|"+"\u263A"+"       |");
+//        }
+//
+//
+//
+//        } else  {
+//        if (k==1){
+//        System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21C8" );
+//        }else if (k==3){
+//        System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21CA" );
+//        }else {
+//        System.out.println("|" + "\u2009     "+ "    |");
+//        }
+//
+//        }
+//        }
