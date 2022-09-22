@@ -66,7 +66,7 @@ public class Lift {
                 if (liftNavigable.isEmpty()){
 
                     findNewDirection();
-                    findNextFloorToUploadDudes();
+
                     System.out.println("elevator is empty// new direction is  "  + elevatorDirection + "  current floor is-->>" + currentFloor   );
                     System.out.println();
 
@@ -256,30 +256,42 @@ public class Lift {
 
             elevatorDirection = dudesToUp.size() > dudesToDown.size() ? 0 : 1;
 
+
         }else  if (currentFloor.getDudesToDown().isEmpty() && !currentFloor.getDudesToUp().isEmpty()){
             elevatorDirection = 0;
         }else if (!currentFloor.getDudesToDown().isEmpty() && currentFloor.getDudesToUp().isEmpty()){
             elevatorDirection=1;
         }
         else {
-            if (elevatorDirection == 0) {
+
                 Floor nextHigherToUp = building.getWaitToUp().higher(currentFloor);
-                Floor nextHigherToDown = building.getWaitToDown().higher(currentFloor);
+                Floor nextHigherToDown = building.getWaitToDown().lower(currentFloor);
 
 
-                if (nextHigherToUp == null && nextHigherToDown == null) {
-                    changeDirection();
+                if (nextHigherToUp != null && nextHigherToDown != null) {
 
+                    int a = nextHigherToUp.getFloorNumber() - currentFloor.getFloorNumber();
+                    int b = currentFloor.getFloorNumber() - nextHigherToDown.getFloorNumber();
+
+                    if (a < b){
+                        elevatorDirection =0;
+                        currentFloor = building.getWaitToUp().higher(currentFloor);
+                    }else {
+                        elevatorDirection =1;
+                        currentFloor = building.getWaitToDown().lower(currentFloor);
+                    }
+
+
+                }else  if (nextHigherToUp == null && nextHigherToDown != null){
+
+                    elevatorDirection =1;
+                    currentFloor = building.getWaitToDown().lower(currentFloor);
+                }else  if (nextHigherToUp != null && nextHigherToDown == null){
+                    elevatorDirection =0;
+                    currentFloor = building.getWaitToUp().higher(currentFloor);
                 }
-            }else {
-                Floor  nextLowerToUp = building.getWaitToUp().lower(currentFloor);
-                Floor nextLowerToDown = building.getWaitToDown().lower(currentFloor);
 
-                if (nextLowerToUp == null && nextLowerToDown == null){
-                    changeDirection();
-                }//else keepDirection
-            }
-//            findNextFloorToUploadDudes();
+
         }
 
 
@@ -295,7 +307,7 @@ public class Lift {
 
         elevatorDurability--;
 //        System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
-        Floor waiter = elevatorDirection == 0 ? building.getWaitToUp().higher(currentFloor) : building.getWaitToUp().lower(currentFloor);
+        Floor waiter = elevatorDirection == 0 ? building.getWaitToUp().higher(currentFloor) : building.getWaitToDown().lower(currentFloor);
         Integer nextNearestFloor = elevatorDirection == 0 ? liftNavigable.higherKey(currentFloor.getFloorNumber()) : liftNavigable.lowerKey(currentFloor.getFloorNumber());
 
         if (freePlaces > 0) {
@@ -303,8 +315,9 @@ public class Lift {
             System.out.println(currentFloor + " CURRENT FLOOR IS +++++++++++");
             if(nextNearestFloor!=null && waiter !=null){
 
-                int min = Math.min(nextNearestFloor, waiter.getFloorNumber());
-                currentFloor = building.getFloorDudes().get(min);
+                int min_Max = elevatorDirection == 0 ?  Math.min(nextNearestFloor, waiter.getFloorNumber())
+                        : Math.max(nextNearestFloor, waiter.getFloorNumber());
+                currentFloor = building.getFloorDudes().get(min_Max);
 
             }else if (nextNearestFloor == null && waiter != null){
 
