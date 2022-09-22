@@ -11,9 +11,9 @@ public class ConsoleLogPrintUI {
         int direction=1;
      LinkedList<Dude> dudes = new LinkedList<>();
      dudes.add(new Dude(1));
-     dudes.add(new Dude(5));
-     dudes.add(new Dude(13));
-     dudes.add(new Dude(78));
+//     dudes.add(new Dude(5));
+//     dudes.add(new Dude(13));
+//     dudes.add(new Dude(78));
 //     dudes.add(new Dude(34));
 
     Floor floor = new Floor(1);
@@ -47,7 +47,14 @@ public class ConsoleLogPrintUI {
 
 
          } else  {
-             System.out.println("|" + "\u2009     "+ "    |");
+             if (k==1){
+                 System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21C8" );
+             }else if (k==3){
+                 System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21CA" );
+             }else {
+                 System.out.println("|" + "\u2009     "+ "    |");
+             }
+
          }
      }
      System.out.println("-----------");
