@@ -155,6 +155,7 @@ public class Lift {
 
 
 
+
         System.out.println(currentFloor.getDudesToDown() + " DUDES TO DOWN");
         System.out.println(currentFloor.getDudesToUp() + " DUDES TO UP");
         if (elevatorDirection ==0 ? !currentFloor.getDudesToUp().isEmpty() : !currentFloor.getDudesToDown().isEmpty()) {

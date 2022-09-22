@@ -9,13 +9,17 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Random random = new Random();
+//        Random random = new Random();
+//
+//
+//        Building building = new Building(random,min,max);
+//        Lift lift = new Lift(random,building);
+//        lift.start();
 
 
-        Building building = new Building(random,min,max);
-        Lift lift = new Lift(random,building);
-        lift.start();
+        ConsoleLogPrintUI printUI = new ConsoleLogPrintUI();
 
+        printUI.printElevatorBeforeLoad();
 
     }
 }
