@@ -4,14 +4,16 @@ public class Lift {
 
 
 
-    public Lift(Random random,Building building) {
+
+    public Lift(Random random, Building building, ConsoleLogPrintUI printUI) {
+        this.printUI = printUI;
         this.random = random;
         this.building = building;
         currentFloor =  building.getWaitToUp().first();
         elevatorDurability = 50;
     }
 
-
+    private final ConsoleLogPrintUI printUI;
     private int currentElevatorDestination;
     private int freePlaces = 5;
 
@@ -55,6 +57,10 @@ public class Lift {
                 System.out.println(countOfDudesToOut.size() + "  ______countOfDudesToOut_______ ");
                 System.out.println(freePlaces + "  ______freePlaces_______ ");
                 liftNavigable.remove(floorNumber);
+                printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,true);
+
+
+
 
 
                 NavigableMap<Integer, LinkedList<Dude>> dudesToUp = currentFloor.getDudesToUp();
@@ -156,9 +162,15 @@ public class Lift {
 
 
 
-        System.out.println(currentFloor.getDudesToDown() + " DUDES TO DOWN");
-        System.out.println(currentFloor.getDudesToUp() + " DUDES TO UP");
+        System.out.println(currentFloor.getDudesToDown().values().stream().mapToInt(List::size).sum() + " DUDES TO DOWN");
+        System.out.println(currentFloor.getDudesToUp().values().stream().mapToInt(List::size).sum() + " DUDES TO UP");
+        System.out.println();
+
+//        printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection);
+
         if (elevatorDirection ==0 ? !currentFloor.getDudesToUp().isEmpty() : !currentFloor.getDudesToDown().isEmpty()) {
+
+
 
             int floorNumber = currentFloor.getFloorNumber();
             System.out.println(building + "  building  " + currentFloor + " currentFloor");
@@ -202,8 +214,12 @@ public class Lift {
 
             }
         }
+
+        printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,false);
+
         System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
         findNextFloorToUploadDudes();
+
     }
 
     private List<Dude> addDudes(List<Dude> to,List<Dude> from) {
@@ -271,21 +287,22 @@ public class Lift {
         System.out.println();
         System.out.println();
         System.out.println("we can move " +  currentFloor);
+        printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,false);
+
 
         //stage one
         if (isStart) {
             System.out.println("________________________________START_________________________________");
-            isStart = false;
             loadDudesIntoElevator();
         }
 
         //stage three
 
+                if (!isStart) {
+                    unloadDudesFromElevator();
+                }
 
-                unloadDudesFromElevator();
-
-
-
+            isStart = false;
 
 
 
