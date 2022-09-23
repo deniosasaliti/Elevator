@@ -57,7 +57,7 @@ public class Lift {
                 System.out.println(countOfDudesToOut.size() + "  ______countOfDudesToOut_______ ");
                 System.out.println(freePlaces + "  ______freePlaces_______ ");
                 liftNavigable.remove(floorNumber);
-                printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,true);
+                printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,countOfDudesToOut.size());
 
 
 
@@ -215,7 +215,7 @@ public class Lift {
             }
         }
 
-        printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,false);
+        printUI.printElevatorBeforeLoad(currentFloor,liftNavigable,elevatorDirection,true);
 
         System.out.println("OOOOOOOOOOOOOOOOOOOO____________" + liftNavigable);
         findNextFloorToUploadDudes();
