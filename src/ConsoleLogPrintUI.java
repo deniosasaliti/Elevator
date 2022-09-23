@@ -11,9 +11,10 @@ public class ConsoleLogPrintUI {
 
 
 
-     String directionFrom = currentElevatorDirection==1 ?  "\u21CA   " : "\u21C8   ";
-     System.out.println("load_unload stage");
-     System.out.println(directionFrom + directionFrom + directionFrom);
+     String directionFrom = currentElevatorDirection==1 ?  "\u21CA " : "\u21C8 ";
+     System.out.println(directionFrom + "Floor-"+ floor.getFloorNumber()+ " " + directionFrom);
+
+
 
 
      printLoadUnloadStage(floor,elevator,amountOfUnloadDudes);
@@ -24,9 +25,8 @@ public class ConsoleLogPrintUI {
 
 
 
-        String directionFrom = currentElevatorDirection==1 ?  "\u21CA   " : "\u21C8   ";
-        System.out.println("load_unload stage");
-        System.out.println(directionFrom + directionFrom + directionFrom);
+        String directionFrom = currentElevatorDirection==1 ?  "\u21CA " : "\u21C8 ";
+        System.out.println(directionFrom + "Floor-"+ floor.getFloorNumber()+ " " + directionFrom);
 
 
         printLoadUnloadStage(floor,elevator,isAngryFace);
@@ -140,59 +140,7 @@ public class ConsoleLogPrintUI {
 
     }
 
-
-
-
-
 }
 
 
 
-//    private void printLoadUnloadStage(Floor floor, NavigableMap<Integer,List<Dude>> elevator,boolean isUnload){
-//
-//        int sumDudesToUp = floor.getDudesToUp().values().stream().mapToInt(List::size).sum();
-//        int sumDudesToDown = floor.getDudesToDown().values().stream().mapToInt(List::size).sum();
-//        List<Dude> dudes =  elevator.values().stream().flatMap(List::stream).toList();
-//
-//
-//
-//
-//
-//
-//
-//        System.out.println("-----------");
-//
-//        for (int k =0; k < 5; k++){
-//            String stringQueueToUp = buildString(new StringBuilder(), sumDudesToUp, "\u263A");
-//            String stringQueueToDown = buildString(new StringBuilder(), sumDudesToDown, "\u263A");
-//
-//            boolean isContain = dudes.size() > k;
-//
-//
-//
-//            if (isContain && k ==1) {
-//                System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToUp + " \u21C8");
-//
-//            }
-//            else if (isContain && k ==3){
-//                System.out.println("|"+"\u263A"+"       |" + "      " + stringQueueToDown + " \u21CA");
-//
-//            }else if (isContain){
-//                System.out.println("|"+"\u263A"+"       |");
-//            }else if (k == 1){
-//                System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToUp + " \u21C8" );
-//            } else if (k == 3) {
-//                System.out.println("|" + "\u2009     "+ "    |" + "      " + stringQueueToDown + " \u21CA" );
-//            }else if (isUnload && k==2){
-//
-//                System.out.println("|"+"\u263A"+"       __" + "      " + stringQueueToUp + " \u21C8");
-//
-//
-//
-//            } else {
-//                System.out.println("|" + "\u2009     "+ "    |");
-//            }
-//        }
-//        System.out.println("-----------");
-//
-//    }

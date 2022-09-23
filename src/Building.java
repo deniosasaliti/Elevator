@@ -93,11 +93,10 @@ public class Building {
                 for (int i = 1; i <=countOfFloor; i++) {
 
             int countOfDudes = random.nextInt(10);
-            System.out.println("FLOOR IS--" + i + " countOfDudes is--" + countOfDudes );
-            System.out.println();
 
 
-//            TreeMap<Integer, Integer> integerIntegerTreeMap = new TreeMap<>();
+
+
                     Floor floor = new Floor(i);
                     floorDudes.put(i,floor);
 
@@ -112,18 +111,18 @@ public class Building {
                         waitToUp.add(floor);
                         NavigableMap<Integer, LinkedList<Dude>> dudesToUp =  floor.getDudesToUp();
                         LinkedList<Dude> dudes =  dudesToUp.get(randomForDude);
-                        System.out.println("DUDES IS_UP   " + dudes);
+
                         dudes = dudes == null ? new LinkedList<>() : dudes;
 
                         dudes.addLast(dude);
                         if (dudesToUp.containsKey(floor.getFloorNumber())){
-                            System.out.println("ON IF UPPPPPP");
+
                             dudesToUp.get(randomForDude).addLast(dude);
                         }else{
                             dudesToUp.put(randomForDude,dudes);
                         }
 
-                        System.out.println(dudesToUp + " MAP_UP IS");
+
                     }else {
                         NavigableMap<Integer, LinkedList<Dude>> dudesToDown = floor.getDudesToDown();
                         LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
@@ -140,7 +139,7 @@ public class Building {
 
                         waitToDown.add(floor);
 
-                        System.out.println(dudesToDown + " MAP_DOWN IS");
+
                     }
 
 
@@ -166,7 +165,7 @@ public class Building {
         if (number == currentFloor){
             number++;
         }
-        System.out.println(number + "  random is");
+
         return number;
     }
 
