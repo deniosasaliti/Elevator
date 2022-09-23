@@ -21,7 +21,7 @@ public class Lift {
     private int elevatorDurability;
 
     Building building;
-    private Random random;
+    private final Random random;
     private boolean isStart = true;
 
 
@@ -34,8 +34,7 @@ public class Lift {
 
 
     private   void unloadDudesFromElevator(){
-        boolean notEmptyDirection = elevatorDirection == 0 ?  currentFloor.getDudesToUp() !=null && !currentFloor.getDudesToUp().isEmpty()
-                : currentFloor.getDudesToDown() !=null && !currentFloor.getDudesToDown().isEmpty();
+
 
         int floorNumber = currentFloor.getFloorNumber();
 
@@ -82,28 +81,32 @@ public class Lift {
 
 
 
+                FillFloorWithDudes(floorNumber,countOfDudesToOut,dudesToUp,dudesToDown);
 
-                for (int k = 1; k <= countOfDudesToOut.size(); k++) {
-                    int randomForDude = getRandomForDude(random, 1, building.countOfFloor, floorNumber);
-
-                    if (randomForDude > floorNumber){
-                        LinkedList<Dude> dudes = dudesToUp.get(randomForDude);
-                        dudes = dudes == null ? new LinkedList<>() : dudes;
-                        dudes.addLast(countOfDudesToOut.get(k-1));
-                        dudesToUp.put(randomForDude,dudes);
-                        building.getWaitToUp().add(building.getFloorDudes().get(randomForDude));
-                    }else {
-                        LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
-                        dudes = dudes == null ? new LinkedList<>() : dudes;
-                        dudes.addLast(countOfDudesToOut.get(k-1));
-                        dudesToDown.put(randomForDude,dudes);
-                        building.getWaitToDown().add(building.getFloorDudes().get(randomForDude));
-                    }
-
-
-                }
 
             }
+
+        }
+    }
+
+    private void FillFloorWithDudes(int floorNumber,List<Dude> countOfDudesToOut,NavigableMap<Integer, LinkedList<Dude>> dudesToUp,NavigableMap<Integer, LinkedList<Dude>> dudesToDown) {
+        for (int k = 1; k <= countOfDudesToOut.size(); k++) {
+            int randomForDude = getRandomForDude(random, 1, building.countOfFloor, floorNumber);
+
+            if (randomForDude > floorNumber){
+                LinkedList<Dude> dudes = dudesToUp.get(randomForDude);
+                dudes = dudes == null ? new LinkedList<>() : dudes;
+                dudes.addLast(countOfDudesToOut.get(k-1));
+                dudesToUp.put(randomForDude,dudes);
+                building.getWaitToUp().add(building.getFloorDudes().get(randomForDude));
+            }else {
+                LinkedList<Dude> dudes = dudesToDown.get(randomForDude);
+                dudes = dudes == null ? new LinkedList<>() : dudes;
+                dudes.addLast(countOfDudesToOut.get(k-1));
+                dudesToDown.put(randomForDude,dudes);
+                building.getWaitToDown().add(building.getFloorDudes().get(randomForDude));
+            }
+
 
         }
     }
@@ -135,7 +138,7 @@ public class Lift {
 
                 currentFloor = building.getWaitToDown().lower(currentFloor);
 
-            }else  if (nextHigherToUp != null && nextHigherToDown == null){
+            }else  if (nextHigherToUp != null){
 
                 currentFloor = building.getWaitToUp().higher(currentFloor);
 
@@ -155,7 +158,7 @@ public class Lift {
 
 
 
-            int floorNumber = currentFloor.getFloorNumber();
+
 
 
             NavigableMap<Integer, LinkedList<Dude>> dudesQue = elevatorDirection == 0 ? currentFloor.getDudesToUp() : currentFloor.getDudesToDown();
@@ -214,9 +217,7 @@ public class Lift {
 
 
 
-    private boolean isElevatorFull(){
-       return freePlaces >= 0;
-    }
+
 
 
 
@@ -331,7 +332,7 @@ public class Lift {
 
                 currentFloor = waiter;
 
-            }else if(nextNearestFloor !=null && waiter ==null){
+            }else if(nextNearestFloor != null){
 
                 currentFloor = building.getFloorDudes().get(nextNearestFloor);
 
